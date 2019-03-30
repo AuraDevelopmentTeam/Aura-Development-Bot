@@ -1,0 +1,17 @@
+plugins {
+    id 'java'
+}
+
+group 'com.github.auradevelopment'
+version '1.0-SNAPSHOT'
+
+sourceCompatibility = 1.8
+
+dependencies {
+    compile 'net.dv8tion:JDA:3.8.3_462'
+    compile 'com.jagrosh:jda-utilities-command:2.0'
+}
+
+repositories {
+    jcenter()
+}
