@@ -2,7 +2,7 @@ apply from: "GradleCommon/common.gradle"
 
 apply plugin: "application"
 
-mainClassName = "dev.aura.aurabot.AuraBot"
+mainClassName = "dev.aura.aurabot.BotMain"
 
 ext {
     commonManifest = {
