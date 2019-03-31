@@ -28,6 +28,11 @@ repositories {
 dependencies {
     compile "net.dv8tion:JDA:${jda_version}"
     compile "com.jagrosh:jda-utilities-command:${jdaUtilitiesCommand_version}"
+
+    compile "commons-cli:commons-cli:${commonsCLI_version}"
+    compile "org.apache.logging.log4j:log4j-core:${log4j_version}"
+    compile "org.fusesource.jansi:jansi:${jansi_version}"
+    compile "org.reflections:reflections:${reflections_version}"
 }
 
 tasks.withType(Jar) {
@@ -36,6 +41,19 @@ tasks.withType(Jar) {
 
 test {
     workingDir = runDir
+    systemProperty "log4j.skipJansi", "true"
+
+    doFirst {
+        file(workingDir).mkdirs()
+    }
+}
+
+run {
+    workingDir = runDir
+
+    if(project.hasProperty("args")) {
+        args project.args.split()
+    }
 
     doFirst {
         file(workingDir).mkdirs()
