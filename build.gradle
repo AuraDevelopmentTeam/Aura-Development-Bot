@@ -1,5 +1,20 @@
 apply from: "GradleCommon/common.gradle"
 
+ext {
+    commonManifest = {
+        attributes(
+            "Main-Class": "dev.aura.aurabot.AuraBot",
+
+            "Specification-Title": pluginName,
+            "Specification-Version": version,
+            "Specification-Vendor": "Aura Development Team",
+            "Implementation-Title": pluginName,
+            "Implementation-Version": version,
+            "Implementation-Vendor": "Aura Development Team"
+        )
+    }
+}
+
 repositories {
     // Additional repositories
 }
@@ -7,4 +22,8 @@ repositories {
 dependencies {
     compile "net.dv8tion:JDA:${jda_version}"
     compile "com.jagrosh:jda-utilities-command:${jdaUtilitiesCommand_version}"
+}
+
+tasks.withType(Jar) {
+    manifest commonManifest
 }
