@@ -1,9 +1,13 @@
 apply from: "GradleCommon/common.gradle"
 
+apply plugin: "application"
+
+mainClassName = "dev.aura.aurabot.AuraBot"
+
 ext {
     commonManifest = {
         attributes(
-            "Main-Class": "dev.aura.aurabot.AuraBot",
+            "Main-Class": mainClassName,
 
             "Specification-Title": pluginName,
             "Specification-Version": version,
@@ -13,6 +17,8 @@ ext {
             "Implementation-Vendor": "Aura Development Team"
         )
     }
+
+    runDir = "run"
 }
 
 repositories {
@@ -26,4 +32,12 @@ dependencies {
 
 tasks.withType(Jar) {
     manifest commonManifest
+}
+
+test {
+    workingDir = runDir
+
+    doFirst {
+        file(workingDir).mkdirs()
+    }
 }
