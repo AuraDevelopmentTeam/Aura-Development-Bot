@@ -13,6 +13,5 @@ public class RoleReactionEvent extends ListenerAdapter {
     if (event.getTextChannel() != ch) return;
 
     // Begin Reaction Checks
-
   }
 }
