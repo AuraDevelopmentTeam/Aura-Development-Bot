@@ -80,6 +80,10 @@ maven repository. (Replace `{version}` with the appropriate version!)
 * Build: Run [gradle] in the repository root: `./gradlew build`. The build will be in `build/libs`
 * If obscure Gradle issues are found try running `./gradlew cleanCache clean`
 
+You can run the project directly through [gradle]. Just run: ./gradlew run`
+
+You can also pass parameters to the program: `./gradlew run "-Pargs=<param1> <param2> ... <paramN>"``
+
 ## Development builds
 
 Between each offical release there are several bleeding edge development builds, which you can also use. But be aware that they might contain unfinished
