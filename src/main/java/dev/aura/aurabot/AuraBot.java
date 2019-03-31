@@ -19,13 +19,13 @@ public class AuraBot {
             .build()
             .awaitReady();
 
-    // Start the CommandClient
+    logger.debug("Start the CommandClient");
     JDA.addEventListener(CommandHandler.getClient());
 
     // Add Listeners Below
     // JDA.addEventListener();
 
-    // Set Presence
+    logger.debug("Set Presence");
     JDA.getPresence().setGame(Game.watching("Code fly past"));
   }
 }
