@@ -1,5 +1,6 @@
 package dev.aura.aurabot;
 
+import dev.aura.aurabot.listeners.RoleReactionEvent;
 import lombok.Getter;
 import lombok.extern.log4j.Log4j2;
 import net.dv8tion.jda.core.AccountType;
@@ -19,13 +20,13 @@ public class AuraBot {
             .build()
             .awaitReady();
 
-    logger.debug("Start the CommandClient");
+    logger.debug("Starting the CommandClient");
     JDA.addEventListener(CommandHandler.getClient());
 
     // Add Listeners Below
-    // JDA.addEventListener();
+    JDA.addEventListener(new RoleReactionEvent());
 
-    logger.debug("Set Presence");
+    logger.debug("Setting Presence");
     JDA.getPresence().setGame(Game.watching("Code fly past"));
   }
 }

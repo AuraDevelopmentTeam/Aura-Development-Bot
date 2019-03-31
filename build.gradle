@@ -8,7 +8,6 @@ ext {
     commonManifest = {
         attributes(
             "Main-Class": mainClassName,
-
             "Specification-Title": pluginName,
             "Specification-Version": version,
             "Specification-Vendor": "Aura Development Team",
