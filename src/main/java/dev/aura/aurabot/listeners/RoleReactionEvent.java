@@ -1,4 +1,4 @@
-package dev.aura.developmentbot.listeners;
+package dev.aura.aurabot.listeners;
 
 import net.dv8tion.jda.core.entities.TextChannel;
 import net.dv8tion.jda.core.events.message.react.MessageReactionAddEvent;

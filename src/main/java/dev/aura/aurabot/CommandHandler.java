@@ -1,4 +1,4 @@
-package dev.aura.developmentbot;
+package dev.aura.aurabot;
 
 import com.jagrosh.jdautilities.command.CommandClient;
 import com.jagrosh.jdautilities.command.CommandClientBuilder;

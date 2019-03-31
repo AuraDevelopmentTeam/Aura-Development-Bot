@@ -1,4 +1,4 @@
-package dev.aura.developmentbot;
+package dev.aura.aurabot;
 
 import lombok.Getter;
 import net.dv8tion.jda.core.AccountType;
