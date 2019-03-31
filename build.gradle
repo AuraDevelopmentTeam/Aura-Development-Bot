@@ -20,8 +20,8 @@ repositories {
 }
 
 dependencies {
-    compile "net.dv8tion:JDA:${jda_version}"
-    compile "com.jagrosh:jda-utilities-command:${jdaUtilitiesCommand_version}"
+    shadow "net.dv8tion:JDA:${jda_version}"
+    shadow "com.jagrosh:jda-utilities-command:${jdaUtilitiesCommand_version}"
 }
 
 tasks.withType(Jar) {
