@@ -26,8 +26,8 @@ repositories {
 }
 
 dependencies {
-    shadow "net.dv8tion:JDA:${jda_version}"
-    shadow "com.jagrosh:jda-utilities-command:${jdaUtilitiesCommand_version}"
+    compile "net.dv8tion:JDA:${jda_version}"
+    compile "com.jagrosh:jda-utilities-command:${jdaUtilitiesCommand_version}"
 }
 
 tasks.withType(Jar) {
@@ -40,4 +40,9 @@ test {
     doFirst {
         file(workingDir).mkdirs()
     }
+}
+
+artifacts {
+    archives distZip
+    archives distTar
 }
