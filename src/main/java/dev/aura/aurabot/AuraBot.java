@@ -17,6 +17,8 @@ import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.CommandLineParser;
 import org.apache.commons.cli.DefaultParser;
 import org.apache.commons.cli.HelpFormatter;
+import org.apache.commons.cli.Option;
+import org.apache.commons.cli.OptionGroup;
 import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
 import org.apache.logging.log4j.Level;
@@ -29,7 +31,7 @@ public class AuraBot {
   public static final String NAME = "@name@";
   public static final String VERSION = "@version@";
   public static final String DESCRIPTION = "@description@";
-  public static final String LICENSE = "@license@";
+  public static final String LICENSE = "MIT License\nCopyright (c) 2019 Aura Development Team";
 
   private static final String VERSION_TEXT = NAME + " v" + VERSION + '\n' + LICENSE;
   private static final String HELP_HEADER = '\n' + NAME + ": " + DESCRIPTION + "\n\nParameters:";
@@ -46,16 +48,22 @@ public class AuraBot {
   @Getter private static JDA JDA;
 
   private static Options getOptions() {
+    final OptionGroup mode = new OptionGroup();
+
+    mode.setRequired(true);
+    mode.addOption(new Option(OPT_TOKEN, "token", true, "The bot token."));
+    mode.addOption(new Option(OPT_VERSION, "version", false, "Print the version."));
+    mode.addOption(new Option(OPT_HELP, "help", false, "Print this message."));
+
     final Options options = new Options();
-    options.addOption(OPT_TOKEN, "token", true, "The bot token.");
+
+    options.addOptionGroup(mode);
     options.addOption(OPT_DEBUG, "debug", false, "Enable more verbose logging.");
-    options.addOption(OPT_HELP, "help", false, "Print this message.");
     options.addOption(
         OPT_VERBOSE,
         "verbose",
         false,
         "Displays all messages that are printed to file.\nWill be very spammy in combination with -d!");
-    options.addOption(OPT_VERSION, "version", false, "Print the version.");
 
     return options;
   }
