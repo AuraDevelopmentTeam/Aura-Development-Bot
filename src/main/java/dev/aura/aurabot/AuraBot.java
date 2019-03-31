@@ -195,7 +195,18 @@ public class AuraBot {
       final CommandLine commandLine = parseParameters(args);
 
       if (commandLine != null) {
-        main(commandLine);
+        try {
+          logger.info("Starting " + NAME + " v" + VERSION);
+
+          main(commandLine);
+
+        } catch (RuntimeException e) {
+          logger.error("Error during startup: {}", e.getMessage());
+          logger.debug("Detailed error:", e);
+          logger.info("Check your settings!");
+
+          setReturnStatus(1);
+        }
       }
     } catch (Exception e) {
       logger.fatal("Fatal Exception in Application:", e);
@@ -210,30 +221,20 @@ public class AuraBot {
   }
 
   public static void main(CommandLine commandLine) throws Exception {
-    try {
-      logger.info("Starting " + NAME + " v" + VERSION);
+    JDA =
+        new JDABuilder(AccountType.BOT)
+            .setToken(commandLine.getOptionValue(OPT_TOKEN))
+            .build()
+            .awaitReady();
 
-      JDA =
-          new JDABuilder(AccountType.BOT)
-              .setToken(commandLine.getOptionValue(OPT_TOKEN))
-              .build()
-              .awaitReady();
+    // Start the CommandClient
+    JDA.addEventListener(CommandHandler.getClient());
 
-      // Start the CommandClient
-      JDA.addEventListener(CommandHandler.getClient());
+    // Add Listeners Below
+    // JDA.addEventListener();
 
-      // Add Listeners Below
-      // JDA.addEventListener();
-
-      // Set Presence
-      JDA.getPresence().setGame(Game.watching("Code fly past"));
-    } catch (RuntimeException e) {
-      logger.error("Error during startup: {}", e.getMessage());
-      logger.debug("Detailed error:", e);
-      logger.info("Check your settings!");
-
-      setReturnStatus(1);
-    }
+    // Set Presence
+    JDA.getPresence().setGame(Game.watching("Code fly past"));
   }
 
   protected static void shutdown() {
