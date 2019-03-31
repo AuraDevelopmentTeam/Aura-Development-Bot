@@ -29,10 +29,12 @@ dependencies {
     compile "net.dv8tion:JDA:${jda_version}"
     compile "com.jagrosh:jda-utilities-command:${jdaUtilitiesCommand_version}"
 
+    compile "com.lmax:disruptor:${disruptor_version}"
     compile "commons-cli:commons-cli:${commonsCLI_version}"
     compile "org.apache.logging.log4j:log4j-core:${log4j_version}"
     compile "org.fusesource.jansi:jansi:${jansi_version}"
-    compile "org.reflections:reflections:${reflections_version}"
+
+    runtime "org.apache.logging.log4j:log4j-slf4j-impl:${log4j_version}"
 }
 
 tasks.withType(Jar) {
