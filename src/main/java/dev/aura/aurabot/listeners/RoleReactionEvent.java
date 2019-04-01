@@ -16,8 +16,9 @@ public class RoleReactionEvent extends ListenerAdapter {
     if (event.getUser().isBot()) return;
     if (event.getTextChannel() != ch) return;
 
-    // BungeeChat Check
+    logger.debug("Processing reaction added...");
 
+    logger.debug("\tBungeeChat");
     if (event.getReactionEmote().getIdLong() == 561652702338220043L) {
       Role role = event.getJDA().getRoleById(535231407237365771L);
       if (event.getMember().getRoles().contains(role)) return;
@@ -34,9 +35,11 @@ public class RoleReactionEvent extends ListenerAdapter {
                       .sendMessage(
                           "You will now be notified for announcements regarding **BungeeChat**.")
                       .queue());
+
+      logger.info("Giving " + event.getMember() + " BungeeChat role.");
     }
 
-    // PowerMoney Check
+    logger.debug("\tPowerMoney");
     if (event.getReactionEmote().getIdLong() == 561652518568853536L) {
       Role role = event.getJDA().getRoleById(535232083258245120L);
       if (event.getMember().getRoles().contains(role)) return;
@@ -53,6 +56,8 @@ public class RoleReactionEvent extends ListenerAdapter {
                       .sendMessage(
                           "You will now be notified for announcements regarding **PowerMoney**.")
                       .queue());
+
+      logger.info("Giving " + event.getMember() + " PowerMoney role.");
     }
   }
 
@@ -63,7 +68,9 @@ public class RoleReactionEvent extends ListenerAdapter {
     if (event.getUser().isBot()) return;
     if (event.getTextChannel() != ch) return;
 
-    // BungeeChat Check
+    logger.debug("Processing reaction removed...");
+
+    logger.debug("\tBungeeChat");
     if (event.getReactionEmote().getIdLong() == 561652702338220043L) {
       Role role = event.getJDA().getRoleById(535231407237365771L);
       if (!event.getMember().getRoles().contains(role)) return;
@@ -80,9 +87,11 @@ public class RoleReactionEvent extends ListenerAdapter {
                       .sendMessage(
                           "You will no longer be notified for announcements regarding **BungeeChat**.")
                       .queue());
+
+      logger.info("Removing " + event.getMember() + " BungeeChat role.");
     }
 
-    // PowerMoney Check
+    logger.debug("\tPowerMoney");
     if (event.getReactionEmote().getIdLong() == 561652518568853536L) {
       Role role = event.getJDA().getRoleById(535232083258245120L);
       if (!event.getMember().getRoles().contains(role)) return;
@@ -99,6 +108,8 @@ public class RoleReactionEvent extends ListenerAdapter {
                       .sendMessage(
                           "You will no longer be notified for announcements regarding **PowerMoney**.")
                       .queue());
+
+      logger.info("Removing " + event.getMember() + " PowerMoney role.");
     }
   }
 }
