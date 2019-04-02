@@ -7,11 +7,15 @@ import net.dv8tion.jda.core.AccountType;
 import net.dv8tion.jda.core.JDA;
 import net.dv8tion.jda.core.JDABuilder;
 import net.dv8tion.jda.core.entities.Game;
+import net.dv8tion.jda.core.entities.Role;
 import org.apache.commons.cli.CommandLine;
+
+import java.util.HashMap;
 
 @Log4j2
 public class AuraBot {
   @Getter private static JDA JDA;
+  @Getter public static HashMap<Long, Role> assignableRoles;
 
   public static void main(CommandLine commandLine) throws Exception {
     JDA =
@@ -19,6 +23,10 @@ public class AuraBot {
             .setToken(commandLine.getOptionValue(BotMain.OPT_TOKEN))
             .build()
             .awaitReady();
+
+    assignableRoles = new HashMap<>();
+    assignableRoles.put(561652702338220043L, JDA.getRoleById(535231407237365771L)); // BungeeChat
+    assignableRoles.put(561652518568853536L, JDA.getRoleById(535232083258245120L)); // PowerMoney
 
     logger.debug("Starting the CommandClient");
     JDA.addEventListener(CommandHandler.getClient());
