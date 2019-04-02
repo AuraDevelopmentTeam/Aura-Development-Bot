@@ -1,6 +1,7 @@
 package dev.aura.aurabot;
 
 import dev.aura.aurabot.listeners.RoleReactionEvent;
+import java.util.HashMap;
 import lombok.Getter;
 import lombok.extern.log4j.Log4j2;
 import net.dv8tion.jda.core.AccountType;
@@ -10,12 +11,10 @@ import net.dv8tion.jda.core.entities.Game;
 import net.dv8tion.jda.core.entities.Role;
 import org.apache.commons.cli.CommandLine;
 
-import java.util.HashMap;
-
 @Log4j2
 public class AuraBot {
   @Getter private static JDA JDA;
-  @Getter public static HashMap<Long, Role> assignableRoles;
+  @Getter private static HashMap<Long, Role> assignableRoles;
 
   public static void main(CommandLine commandLine) throws Exception {
     JDA =

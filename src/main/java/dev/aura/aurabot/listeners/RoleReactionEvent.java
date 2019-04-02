@@ -17,7 +17,7 @@ public class RoleReactionEvent extends ListenerAdapter {
     if (event.getUser().isBot()) return;
     if (event.getTextChannel() != ch) return;
 
-    if(AuraBot.getAssignableRoles().containsKey(event.getReactionEmote().getIdLong())){
+    if (AuraBot.getAssignableRoles().containsKey(event.getReactionEmote().getIdLong())) {
       Role role = AuraBot.getAssignableRoles().get(event.getReactionEmote().getIdLong());
       if (event.getMember().getRoles().contains(role)) return;
       // Doesn't contain role, carry on
@@ -25,14 +25,16 @@ public class RoleReactionEvent extends ListenerAdapter {
 
       // Send confirmation msg
       event
-              .getUser()
-              .openPrivateChannel()
-              .queue(
-                      channel ->
-                              channel
-                                      .sendMessage(
-                                              "You will now be notified for announcements regarding **" + role.getName() + "**.")
-                                      .queue());
+          .getUser()
+          .openPrivateChannel()
+          .queue(
+              channel ->
+                  channel
+                      .sendMessage(
+                          "You will now be notified for announcements regarding **"
+                              + role.getName()
+                              + "**.")
+                      .queue());
     }
   }
 
@@ -43,7 +45,7 @@ public class RoleReactionEvent extends ListenerAdapter {
     if (event.getUser().isBot()) return;
     if (event.getTextChannel() != ch) return;
 
-    if(AuraBot.getAssignableRoles().containsKey(event.getReactionEmote().getIdLong())){
+    if (AuraBot.getAssignableRoles().containsKey(event.getReactionEmote().getIdLong())) {
       Role role = AuraBot.getAssignableRoles().get(event.getReactionEmote().getIdLong());
       if (event.getMember().getRoles().contains(role)) return;
       // Doesn't contain role, carry on
@@ -51,14 +53,16 @@ public class RoleReactionEvent extends ListenerAdapter {
 
       // Send confirmation msg
       event
-              .getUser()
-              .openPrivateChannel()
-              .queue(
-                      channel ->
-                              channel
-                                      .sendMessage(
-                                              "You will no longer be notified for announcements regarding **" + role.getName() + "**.")
-                                      .queue());
+          .getUser()
+          .openPrivateChannel()
+          .queue(
+              channel ->
+                  channel
+                      .sendMessage(
+                          "You will no longer be notified for announcements regarding **"
+                              + role.getName()
+                              + "**.")
+                      .queue());
     }
   }
 }
