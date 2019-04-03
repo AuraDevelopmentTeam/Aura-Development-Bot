@@ -21,9 +21,7 @@
   <Loggers>
     <AsyncRoot level="debug" includeLocation="true">
       <AppenderRef ref="File"/>
+      <AppenderRef ref="Console" level="info"/>
     </AsyncRoot>
-    <AsyncLogger name="de.project_creative.arrestia.dev_bot" level="info" includeLocation="true">
-      <AppenderRef ref="Console"/>
-    </AsyncLogger>
   </Loggers>
 </Configuration>
