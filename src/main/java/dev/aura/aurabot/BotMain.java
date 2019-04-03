@@ -1,5 +1,6 @@
 package dev.aura.aurabot;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import java.io.File;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
@@ -40,6 +41,8 @@ public class BotMain {
   protected static final String OPT_VERSION = "V";
 
   @Getter @Setter private static volatile int returnStatus = -1;
+
+  private static final Object LOCK = new Object();
 
   private static Options getOptions() {
     final OptionGroup mode = new OptionGroup();
@@ -183,6 +186,8 @@ public class BotMain {
 
   public static void main(String[] args) {
     try {
+      logger.debug("Registering Shutdown Hook");
+      Runtime.getRuntime().addShutdownHook(new Thread(BotMain::stop));
       logger.debug("Registering UncaughtExceptionLogger");
       Thread.setDefaultUncaughtExceptionHandler(new UncaughtExceptionLogger());
 
@@ -194,6 +199,7 @@ public class BotMain {
 
           AuraBot.main(commandLine);
 
+          block();
         } catch (RuntimeException e) {
           logger.error("Error during startup: {}", e.getMessage());
           logger.debug("Detailed error:", e);
@@ -224,6 +230,51 @@ public class BotMain {
     } else {
       logger.warn("Application stopped with exit value {}.", returnStatus);
     }
+  }
+
+  public static void stop() {
+    stop(0);
+  }
+
+  @SuppressFBWarnings(value = "NN_NAKED_NOTIFY", justification = "State is stored in an int.")
+  public static void stop(int status) {
+    setReturnStatus(status);
+
+    synchronized (LOCK) {
+      LOCK.notify();
+    }
+  }
+
+  protected static void block() {
+    synchronized (LOCK) {
+      boolean printMessage = false;
+
+      while (keepRunning(printMessage)) {
+        try {
+          LOCK.wait();
+        } catch (InterruptedException e) {
+          logger.debug("Recived interruption:", e);
+        }
+
+        printMessage = true;
+      }
+    }
+  }
+
+  private static boolean keepRunning(boolean verbose) {
+    final boolean run = returnStatus < 0;
+
+    if (verbose && logger.isTraceEnabled()) {
+      logger.trace("Return Status is {}", returnStatus);
+
+      if (run) {
+        logger.trace("Keep running");
+      } else {
+        logger.trace("Stopping");
+      }
+    }
+
+    return run;
   }
 
   @Log4j2
