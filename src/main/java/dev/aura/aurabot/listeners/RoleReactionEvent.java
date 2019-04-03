@@ -44,7 +44,10 @@ public class RoleReactionEvent extends ListenerAdapter {
                               + "**.")
                       .queue());
 
-      logger.info("Assigned the role {} to member {}.", role.getName(), event.getMember().getEffectiveName());
+      logger.info(
+          "Assigned the role {} to member {}.",
+          role.getName(),
+          event.getMember().getEffectiveName());
     } else {
       // Don't want to output any debug to prevent spam. But just a normal reaction.
     }
@@ -84,9 +87,11 @@ public class RoleReactionEvent extends ListenerAdapter {
                               + "**.")
                       .queue());
 
-      logger.info("Removed the role {} from member {}.", role.getName(), event.getMember().getEffectiveName());
-    }
-    else{
+      logger.info(
+          "Removed the role {} from member {}.",
+          role.getName(),
+          event.getMember().getEffectiveName());
+    } else {
       // Don't want to output any debug to prevent spam. But just a normal reaction.
     }
   }
