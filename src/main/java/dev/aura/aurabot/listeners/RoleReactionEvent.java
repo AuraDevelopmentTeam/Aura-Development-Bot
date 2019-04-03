@@ -18,11 +18,10 @@ public class RoleReactionEvent extends ListenerAdapter {
     if (event.getTextChannel() != ch) return;
 
     logger.debug("Processing reaction added...");
-    logger.debug("\tMember: {}", event.getMember());
+    logger.debug("\tMember: {}", event.getMember().getEffectiveName());
 
     if (AuraBot.getAssignableRoles().containsKey(event.getReactionEmote().getIdLong())) {
       Role role = AuraBot.getAssignableRoles().get(event.getReactionEmote().getIdLong());
-
       logger.debug("\tRole: {}", role.getName());
 
       if (event.getMember().getRoles().contains(role)) {
@@ -45,12 +44,9 @@ public class RoleReactionEvent extends ListenerAdapter {
                               + "**.")
                       .queue());
 
-      logger.info("Assigned the role {} to member {}.", role.getName(), event.getMember());
+      logger.info("Assigned the role {} to member {}.", role.getName(), event.getMember().getEffectiveName());
     } else {
-      logger.debug("\tUnused role.");
-      logger.debug("\tRemoving reaction...");
-
-      // TODO
+      // Don't want to output any debug to prevent spam. But just a normal reaction.
     }
   }
 
@@ -62,11 +58,10 @@ public class RoleReactionEvent extends ListenerAdapter {
     if (event.getTextChannel() != ch) return;
 
     logger.debug("Processing reaction removed...");
-    logger.debug("\tMember: {}", event.getMember());
+    logger.debug("\tMember: {}", event.getMember().getEffectiveName());
 
     if (AuraBot.getAssignableRoles().containsKey(event.getReactionEmote().getIdLong())) {
       final Role role = AuraBot.getAssignableRoles().get(event.getReactionEmote().getIdLong());
-
       logger.debug("\tRole: {}", role.getName());
 
       if (!event.getMember().getRoles().contains(role)) {
@@ -89,7 +84,10 @@ public class RoleReactionEvent extends ListenerAdapter {
                               + "**.")
                       .queue());
 
-      logger.info("Removed the role {} from member {}.", role.getName(), event.getMember());
+      logger.info("Removed the role {} from member {}.", role.getName(), event.getMember().getEffectiveName());
+    }
+    else{
+      // Don't want to output any debug to prevent spam. But just a normal reaction.
     }
   }
 }
