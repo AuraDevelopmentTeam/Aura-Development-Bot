@@ -26,6 +26,7 @@ public class RoleReactionEvent extends ListenerAdapter {
     updateAssignChannel();
   }
 
+  @Override
   public void onMessageReactionAdd(MessageReactionAddEvent event) {
     if ((event.getTextChannel() != assignChannel) || (event.getUser().isBot())) return;
 
@@ -61,10 +62,14 @@ public class RoleReactionEvent extends ListenerAdapter {
           role.getName(),
           event.getMember().getEffectiveName());
     } else {
-      // Don't want to output any debug to prevent spam. But just a normal reaction.
+      logger.debug("\tUnused role.");
+      logger.debug("\tRemoving reaction...");
+
+      // TODO: Remove wrong reaction
     }
   }
 
+  @Override
   public void onMessageReactionRemove(MessageReactionRemoveEvent event) {
     if ((event.getTextChannel() != assignChannel) || (event.getUser().isBot())) return;
 
@@ -99,8 +104,6 @@ public class RoleReactionEvent extends ListenerAdapter {
           "Removed the role {} from member {}.",
           role.getName(),
           event.getMember().getEffectiveName());
-    } else {
-      // Don't want to output any debug to prevent spam. But just a normal reaction.
     }
   }
 
