@@ -5,6 +5,9 @@ import lombok.extern.log4j.Log4j2;
 import net.dv8tion.jda.core.JDA;
 import net.dv8tion.jda.core.entities.Role;
 import net.dv8tion.jda.core.entities.TextChannel;
+import net.dv8tion.jda.core.events.channel.text.GenericTextChannelEvent;
+import net.dv8tion.jda.core.events.channel.text.update.GenericTextChannelUpdateEvent;
+import net.dv8tion.jda.core.events.channel.text.update.TextChannelUpdateNameEvent;
 import net.dv8tion.jda.core.events.message.react.MessageReactionAddEvent;
 import net.dv8tion.jda.core.events.message.react.MessageReactionRemoveEvent;
 import net.dv8tion.jda.core.hooks.ListenerAdapter;
@@ -14,23 +17,13 @@ public class RoleReactionEvent extends ListenerAdapter {
   private static final String guildName = "Aura Development Team";
   private static final String channelName = "assign-a-role";
 
-  private final TextChannel assignChannel;
+  private final JDA JDA;
+  private TextChannel assignChannel;
 
   public RoleReactionEvent(JDA JDA) {
-    logger.debug("Get the reaction channel");
-    assignChannel =
-        JDA.getTextChannelsByName(channelName, false)
-            .stream()
-            .filter(channel -> guildName.equals(channel.getGuild().getName()))
-            .findFirst()
-            .orElseThrow(
-                () ->
-                    new IllegalStateException(
-                        "Could not find channel \"#"
-                            + channelName
-                            + "\" on guild \""
-                            + guildName
-                            + "\"."));
+    this.JDA = JDA;
+
+    updateAssignChannel();
   }
 
   public void onMessageReactionAdd(MessageReactionAddEvent event) {
@@ -109,5 +102,31 @@ public class RoleReactionEvent extends ListenerAdapter {
     } else {
       // Don't want to output any debug to prevent spam. But just a normal reaction.
     }
+  }
+
+  @Override
+  public void onGenericTextChannel(GenericTextChannelEvent event) {
+    if (((event instanceof GenericTextChannelUpdateEvent)
+            && !(event instanceof TextChannelUpdateNameEvent))
+        || !guildName.equals(event.getGuild().getName())) return;
+
+    updateAssignChannel();
+  }
+
+  private final void updateAssignChannel() {
+    logger.debug("Get the reaction channel");
+    assignChannel =
+        JDA.getTextChannelsByName(channelName, false)
+            .stream()
+            .filter(channel -> guildName.equals(channel.getGuild().getName()))
+            .findFirst()
+            .orElseThrow(
+                () ->
+                    new IllegalStateException(
+                        "Could not find channel \"#"
+                            + channelName
+                            + "\" on guild \""
+                            + guildName
+                            + "\"."));
   }
 }
