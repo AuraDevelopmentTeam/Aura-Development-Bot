@@ -11,19 +11,28 @@ import net.dv8tion.jda.core.hooks.ListenerAdapter;
 @Log4j2
 public class RoleReactionEvent extends ListenerAdapter {
   public void onMessageReactionAdd(MessageReactionAddEvent event) {
-    // Assign the reaction channel
-    TextChannel ch = event.getJDA().getTextChannelById("561650523691024385");
+    logger.trace("Get the reaction channel");
+    final TextChannel ch = event.getJDA().getTextChannelById("561650523691024385");
 
     if (event.getUser().isBot()) return;
     if (event.getTextChannel() != ch) return;
 
+    logger.debug("Processing reaction added...");
+    logger.debug("\tMember: {}", event.getMember());
+
     if (AuraBot.getAssignableRoles().containsKey(event.getReactionEmote().getIdLong())) {
       Role role = AuraBot.getAssignableRoles().get(event.getReactionEmote().getIdLong());
-      if (event.getMember().getRoles().contains(role)) return;
-      // Doesn't contain role, carry on
+
+      logger.debug("\tRole: {}", role.getName());
+
+      if (event.getMember().getRoles().contains(role)) {
+        logger.trace("\tMember already has role!");
+        return;
+      }
+
       event.getGuild().getController().addRolesToMember(event.getMember(), role).queue();
 
-      // Send confirmation msg
+      logger.debug("\tSending confirmation msg...");
       event
           .getUser()
           .openPrivateChannel()
@@ -35,23 +44,39 @@ public class RoleReactionEvent extends ListenerAdapter {
                               + role.getName()
                               + "**.")
                       .queue());
+
+      logger.info("\tAssigned the role.");
+    } else {
+      logger.debug("\tUnused role.");
+      logger.debug("\tRemoving reaction...");
+
+      // TODO
     }
   }
 
   public void onMessageReactionRemove(MessageReactionRemoveEvent event) {
-    // Assign the reaction channel
-    TextChannel ch = event.getJDA().getTextChannelById("561650523691024385");
+    logger.trace("Get the reaction channel");
+    final TextChannel ch = event.getJDA().getTextChannelById("561650523691024385");
 
     if (event.getUser().isBot()) return;
     if (event.getTextChannel() != ch) return;
 
+    logger.debug("Processing reaction removed...");
+    logger.debug("\tMember: {}", event.getMember());
+
     if (AuraBot.getAssignableRoles().containsKey(event.getReactionEmote().getIdLong())) {
-      Role role = AuraBot.getAssignableRoles().get(event.getReactionEmote().getIdLong());
-      if (event.getMember().getRoles().contains(role)) return;
-      // Doesn't contain role, carry on
+      final Role role = AuraBot.getAssignableRoles().get(event.getReactionEmote().getIdLong());
+
+      logger.debug("\tRole: {}", role.getName());
+
+      if (!event.getMember().getRoles().contains(role)) {
+        logger.trace("\tMember doesn't have role!");
+        return;
+      }
+
       event.getGuild().getController().removeRolesFromMember(event.getMember(), role).queue();
 
-      // Send confirmation msg
+      logger.debug("\tSending confirmation msg...");
       event
           .getUser()
           .openPrivateChannel()
@@ -63,6 +88,8 @@ public class RoleReactionEvent extends ListenerAdapter {
                               + role.getName()
                               + "**.")
                       .queue());
+
+      logger.info("\tRemoved the role.");
     }
   }
 }
