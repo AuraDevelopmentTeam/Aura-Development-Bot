@@ -45,7 +45,7 @@ public class RoleReactionEvent extends ListenerAdapter {
                               + "**.")
                       .queue());
 
-      logger.info("\tAssigned the role.");
+      logger.info("Assigned the role {} to member {}.", role.getName(), event.getMember());
     } else {
       logger.debug("\tUnused role.");
       logger.debug("\tRemoving reaction...");
@@ -89,7 +89,7 @@ public class RoleReactionEvent extends ListenerAdapter {
                               + "**.")
                       .queue());
 
-      logger.info("\tRemoved the role.");
+      logger.info("Removed the role {} from member {}.", role.getName(), event.getMember());
     }
   }
 }
