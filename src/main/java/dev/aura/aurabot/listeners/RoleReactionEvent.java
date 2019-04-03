@@ -10,6 +10,7 @@ import net.dv8tion.jda.core.hooks.ListenerAdapter;
 
 @Log4j2
 public class RoleReactionEvent extends ListenerAdapter {
+  @Override
   public void onMessageReactionAdd(MessageReactionAddEvent event) {
     logger.trace("Get the reaction channel");
     final TextChannel ch = event.getJDA().getTextChannelById("561650523691024385");
@@ -49,10 +50,14 @@ public class RoleReactionEvent extends ListenerAdapter {
           role.getName(),
           event.getMember().getEffectiveName());
     } else {
-      // Don't want to output any debug to prevent spam. But just a normal reaction.
+      logger.debug("\tUnused role.");
+      logger.debug("\tRemoving reaction...");
+
+      // TODO: Remove wrong reaction
     }
   }
 
+  @Override
   public void onMessageReactionRemove(MessageReactionRemoveEvent event) {
     logger.trace("Get the reaction channel");
     final TextChannel ch = event.getJDA().getTextChannelById("561650523691024385");
@@ -91,8 +96,6 @@ public class RoleReactionEvent extends ListenerAdapter {
           "Removed the role {} from member {}.",
           role.getName(),
           event.getMember().getEffectiveName());
-    } else {
-      // Don't want to output any debug to prevent spam. But just a normal reaction.
     }
   }
 }
