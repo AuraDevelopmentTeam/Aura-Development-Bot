@@ -2,6 +2,7 @@ package dev.aura.aurabot.listeners;
 
 import dev.aura.aurabot.AuraBot;
 import lombok.extern.log4j.Log4j2;
+import net.dv8tion.jda.core.JDA;
 import net.dv8tion.jda.core.entities.Role;
 import net.dv8tion.jda.core.entities.TextChannel;
 import net.dv8tion.jda.core.events.message.react.MessageReactionAddEvent;
@@ -10,12 +11,30 @@ import net.dv8tion.jda.core.hooks.ListenerAdapter;
 
 @Log4j2
 public class RoleReactionEvent extends ListenerAdapter {
-  public void onMessageReactionAdd(MessageReactionAddEvent event) {
-    logger.trace("Get the reaction channel");
-    final TextChannel ch = event.getJDA().getTextChannelById("561650523691024385");
+  private static final String guildName = "Aura Development Team";
+  private static final String channelName = "assign-a-role";
 
-    if (event.getUser().isBot()) return;
-    if (event.getTextChannel() != ch) return;
+  private final TextChannel assignChannel;
+
+  public RoleReactionEvent(JDA JDA) {
+    logger.debug("Get the reaction channel");
+    assignChannel =
+        JDA.getTextChannelsByName(channelName, false)
+            .stream()
+            .filter(channel -> guildName.equals(channel.getGuild().getName()))
+            .findFirst()
+            .orElseThrow(
+                () ->
+                    new IllegalStateException(
+                        "Could not find channel \"#"
+                            + channelName
+                            + "\" on guild \""
+                            + guildName
+                            + "\"."));
+  }
+
+  public void onMessageReactionAdd(MessageReactionAddEvent event) {
+    if ((event.getTextChannel() != assignChannel) || (event.getUser().isBot())) return;
 
     logger.debug("Processing reaction added...");
     logger.debug("\tMember: {}", event.getMember().getEffectiveName());
@@ -54,11 +73,7 @@ public class RoleReactionEvent extends ListenerAdapter {
   }
 
   public void onMessageReactionRemove(MessageReactionRemoveEvent event) {
-    logger.trace("Get the reaction channel");
-    final TextChannel ch = event.getJDA().getTextChannelById("561650523691024385");
-
-    if (event.getUser().isBot()) return;
-    if (event.getTextChannel() != ch) return;
+    if ((event.getTextChannel() != assignChannel) || (event.getUser().isBot())) return;
 
     logger.debug("Processing reaction removed...");
     logger.debug("\tMember: {}", event.getMember().getEffectiveName());

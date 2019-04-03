@@ -31,7 +31,7 @@ public class AuraBot {
     JDA.addEventListener(CommandHandler.getClient());
 
     // Add Listeners Below
-    JDA.addEventListener(new RoleReactionEvent());
+    JDA.addEventListener(new RoleReactionEvent(JDA));
 
     logger.debug("Setting Presence");
     JDA.getPresence().setGame(Game.watching("Code fly past"));
